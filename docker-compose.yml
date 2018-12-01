@@ -1,0 +1,39 @@
+version: "3"
+
+networks:
+  fintech-backend:
+    external: true
+
+volumes:
+  ft-mysql-data:
+
+services:
+  ft-web-api-golang:
+    container_name: ft-web-api-golang
+    image: ft-web-api-golang
+    build:
+      context: .
+      dockerfile: .docker/golang/Dockerfile.dev
+    volumes:
+      - .:/go/src/github.com/Sharykhin/fin-tech
+    env_file:
+      - ./.docker/golang/.env
+    ports:
+      - 8003:8003
+    networks:
+      - fintech-backend
+  ft-mysql:
+    container_name: ft-mysql
+    image: ft-mysql
+    build:
+      context: .
+      dockerfile: .docker/mysql/Dockerfile
+    volumes:
+      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ft-mysql-data:/var/lib/mysql
+    ports:
+      - 3309:3306
+    env_file:
+      - ./.docker/mysql/.env
+    networks:
+      - fintech-backend
