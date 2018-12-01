@@ -13,8 +13,8 @@ func main() {
 		if err != nil {
 			panic(fmt.Errorf("could not write into the http output: %v", err))
 		}
-
 	})
+
 	addr := os.Getenv("WEB_API_ADDRESS")
 	fmt.Println("Start listening on: ", addr)
 	log.Fatal(http.ListenAndServe(addr, nil))
