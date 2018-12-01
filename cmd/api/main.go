@@ -2,15 +2,21 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"log"
+	"net/http"
 	"os"
 )
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		_, err := w.Write([]byte("OK"))
-		panic(fmt.Errorf("could not write into the http output: %v", err))
+		if err != nil {
+			panic(fmt.Errorf("could not write into the http output: %v", err))
+		}
+
 	})
-	log.Fatal(http.ListenAndServe(os.Getenv("WEB_API_ADDRESS"), nil))
+	addr := os.Getenv("WEB_API_ADDRESS")
+	fmt.Println("Start listening on: ", addr)
+	log.Fatal(http.ListenAndServe(addr, nil))
+
 }

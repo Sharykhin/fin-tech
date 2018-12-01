@@ -13,11 +13,11 @@ services:
     image: ft-web-api-golang
     build:
       context: .
-      dockerfile: .docker/golang/Dockerfile.dev
+      dockerfile: .docker/golang/api/Dockerfile
     volumes:
       - .:/go/src/github.com/Sharykhin/fin-tech
     env_file:
-      - ./.docker/golang/.env
+      - ./.docker/golang/api/.env
     ports:
       - 8003:8003
     networks:
