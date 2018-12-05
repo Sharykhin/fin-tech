@@ -2,11 +2,15 @@ Financial Dashboard:
 ====================
 
 
+#### Installation:
 
-Installation:
--------------
+##### Requirements:
 
-1. Create `fintech-backend` network:
+- Docker
+- Docker Compose
+- Git
+
+1. Run installation command, after prompt reply `y`:
 ```bash
-docker network create fintech-backend
+make install
 ```
