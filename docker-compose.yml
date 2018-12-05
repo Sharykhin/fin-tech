@@ -20,6 +20,10 @@ services:
       - ./.docker/golang/api/.env
     ports:
       - 8003:8003
+    depends_on:
+      - ft-mysql
+    links:
+      - ft-mysql
     networks:
       - fintech-backend
   ft-mysql:

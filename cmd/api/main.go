@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	_ "github.com/Sharykhin/fin-tech/database/mysql"
 )
 
 func main() {
