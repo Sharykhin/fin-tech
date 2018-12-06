@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/Sharykhin/fin-tech/database/mysql/user"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -35,9 +34,7 @@ func init() {
 	conn = db
 }
 
-func NewUserService() *user.UserService {
-	us := user.UserService{}
-
-	return &us
-
+// GetConnection returns mysql connection
+func GetConnection() *sql.DB {
+	return conn
 }
