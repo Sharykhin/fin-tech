@@ -1,6 +1,6 @@
 -- +goose Up
 -- SQL in this section is executed when the migration is applied.
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(80) NOT NULL,
   `first_name` VARCHAR(45) NULL,
@@ -13,4 +13,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- +goose Down
 -- SQL in this section is executed when the migration is rolled back.
-DROP TABLE IF EXISTS `users`;
+DROP TABLE `users`;

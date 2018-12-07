@@ -21,17 +21,17 @@ lint:
 	docker-compose exec ft-web-api-golang gometalinter.v2 ./...
 
 migrate-status:
-	goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}" status
+	docker-compose exec ft-web-api-golang goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}?parseTime=true&charset=utf8" status
 
 migrate-up:
-	goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}" up
+	docker-compose exec ft-web-api-golang goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}?parseTime=true&charset=utf8" up
 
 migrate-down:
-	goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}" down
+	docker-compose exec ft-web-api-golang goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}?parseTime=true&charset=utf8" down
 
 migrate-create:
 	@echo  "Please prove name of your migration(example: create_users_table) or terminate it (ctrl+C)"
-	@read input && goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}" create $$input sql
+	@read input && docker-compose exec ft-web-api-golang goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}?parseTime=true&charset=utf8" create $$input sql
 
 
 install_confirmation:
