@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Sharykhin/fin-tech/http/handlers/users"
+
 	"github.com/Sharykhin/fin-tech/http/handlers"
 	"github.com/gorilla/mux"
 )
@@ -11,8 +13,8 @@ import (
 func router() http.Handler {
 	r := mux.NewRouter()
 
-	s := r.PathPrefix("/api").Subrouter()
-
+	s := r.StrictSlash(true).PathPrefix("/api").Subrouter()
+	s.HandleFunc("/users", users.Index).Methods("GET")
 	s.HandleFunc("/_healthcheck", handlers.HealthCheck).Methods("GET")
 
 	return s

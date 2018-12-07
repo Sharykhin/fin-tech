@@ -13,8 +13,8 @@ type (
 	}
 )
 
-// NewUserService returns a new instance of UserService struct
-func NewUserService() *CRUDService {
+// NewCRUDService returns a new instance of UserService struct
+func NewCRUDService() *CRUDService {
 	us := CRUDService{
 		db: mysql.GetConnection(),
 	}
