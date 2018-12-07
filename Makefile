@@ -5,6 +5,7 @@
 
 .PHONY: install serve lint migrations
 
+include .docker/mysql/.env
 
 install: install_confirmation
 	cp .docker/golang/api/.env.example .docker/golang/api/.env
@@ -19,8 +20,19 @@ serve:
 lint:
 	docker-compose exec ft-web-api-golang gometalinter.v2 ./...
 
-migrations:
-	echo 12
+migrate-status:
+	goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}" status
+
+migrate-up:
+	goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}" up
+
+migrate-down:
+	goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}" down
+
+migrate-create:
+	@echo  "Please prove name of your migration(example: create_users_table) or terminate it (ctrl+C)"
+	@read input && goose -dir migrations mysql "${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(ft-mysql)/${MYSQL_DATABASE}" create $$input sql
+
 
 install_confirmation:
 	@echo  "Would you like to start installation [y/N]? " && read ans && [ $$ans == y ]
