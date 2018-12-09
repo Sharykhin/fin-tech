@@ -18,10 +18,12 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&ur)
 	if err != nil {
 		fmt.Println(err)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), 400)
 		return
 	}
-	fmt.Println(ur)
+	if errs := ur.Validate(); errs != nil {
+		//http.Error(w)
+	}
 	u, err := uc.Create(r.Context(), ur)
 	if err != nil {
 		log.Fatal(err)
