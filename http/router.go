@@ -15,6 +15,7 @@ func router() http.Handler {
 
 	s := r.StrictSlash(true).PathPrefix("/api").Subrouter()
 	s.HandleFunc("/users", users.Index).Methods("GET")
+	s.HandleFunc("/users", users.Create).Methods("POST")
 	s.HandleFunc("/_healthcheck", handlers.HealthCheck).Methods("GET")
 
 	return s
