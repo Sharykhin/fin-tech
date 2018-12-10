@@ -10,7 +10,8 @@ import (
 	"github.com/Sharykhin/fin-tech/service/response"
 )
 
-//TODO: we should use logging when user could not be created
+// TODO: we should use logging when user could not be created
+// TODO: think about serialization group
 
 // Create handler creates a new user
 func Create(w http.ResponseWriter, r *http.Request) {
