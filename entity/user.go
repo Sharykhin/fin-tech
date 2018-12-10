@@ -1,5 +1,7 @@
 package entity
 
+import "encoding/json"
+
 type (
 	// User struct represents general User model
 	User struct {
@@ -11,3 +13,11 @@ type (
 		DeletedAt NullTime `json:"deleted_at"`
 	}
 )
+
+func (u User) Serialize(group string) ([]byte, error) {
+	return json.Marshal(&struct {
+		ID int64
+	}{
+		ID: u.ID,
+	})
+}

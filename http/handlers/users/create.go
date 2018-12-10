@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/Sharykhin/fin-tech/controller/user"
@@ -35,5 +36,11 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response.SendSuccess(w, u, nil, nil, http.StatusCreated)
+	s, err := u.Serialize("index")
+	if err != nil {
+		// TODO: if we could create user but not serialize we should not terminate app
+		log.Fatal(err)
+	}
+
+	response.SendSuccess(w, s, nil, nil, http.StatusCreated)
 }
