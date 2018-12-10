@@ -2,33 +2,37 @@ package users
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/Sharykhin/fin-tech/controller/user"
+	"github.com/Sharykhin/fin-tech/http/errs"
 	"github.com/Sharykhin/fin-tech/request"
+	"github.com/Sharykhin/fin-tech/service/response"
 )
+
+//TODO: we should use logging when user could not be created
 
 // Create handler creates a new user
 func Create(w http.ResponseWriter, r *http.Request) {
-	uc := user.NewUserController()
 	decoder := json.NewDecoder(r.Body)
 	var ur request.UserCreateRequest
 	err := decoder.Decode(&ur)
 	if err != nil {
-		fmt.Println(err)
-		http.Error(w, err.Error(), 400)
+		response.SendError(w, errs.InvalidJSON, http.StatusBadRequest)
 		return
 	}
-	if errs := ur.Validate(); errs != nil {
-		//http.Error(w)
+
+	if err := ur.Validate(); err != nil {
+		response.SendError(w, err, http.StatusBadRequest)
+		return
 	}
+
+	uc := user.NewUserController()
 	u, err := uc.Create(r.Context(), ur)
 	if err != nil {
-		log.Fatal(err)
+		response.SendError(w, err, http.StatusInternalServerError)
+		return
 	}
-	fmt.Println(u)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(&u)
+
+	response.SendSuccess(w, u, nil, nil, http.StatusCreated)
 }
