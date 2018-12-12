@@ -2,7 +2,6 @@ package users
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -49,12 +48,13 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	s, err := u.Serialize("index")
-	fmt.Println("serialized user", s)
+	s, err := u.Serialize("public")
+
 	if err != nil {
 		// TODO: if we could create user but not serialize we should not terminate app
 		log.Fatal(err)
 	}
 
-	response.SendSuccess(w, u, nil, nil, http.StatusCreated)
+	//response.Send(w, s, http.StatusCreated)
+	response.SendSuccess(w, s, nil, nil, http.StatusCreated)
 }

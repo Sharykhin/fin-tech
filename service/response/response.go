@@ -3,6 +3,7 @@ package response
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -23,14 +24,30 @@ func setHeaders(w http.ResponseWriter) {
 func SendSuccess(w http.ResponseWriter, data interface{}, warnings interface{}, meta interface{}, statusCode int) {
 	setHeaders(w)
 	w.WriteHeader(statusCode)
-	err := json.NewEncoder(w).Encode(&response{
-		Data:     data,
-		Errors:   nil,
-		Warnings: warnings,
-		Meta:     meta,
-	})
+	var err error
+	if raw, ok := data.([]byte); ok {
+		err = json.NewEncoder(w).Encode(&struct {
+			Data     json.RawMessage `json:"data"`
+			Errors   interface{}     `json:"errors"`
+			Warnings interface{}     `json:"warnings"`
+			Meta     interface{}     `json:"meta"`
+		}{
+			Data:     raw,
+			Errors:   nil,
+			Warnings: warnings,
+			Meta:     meta,
+		})
+	} else {
+		err = json.NewEncoder(w).Encode(&response{
+			Data:     data,
+			Errors:   nil,
+			Warnings: warnings,
+			Meta:     meta,
+		})
+	}
+
 	if err != nil {
-		panic(fmt.Errorf("could not encode http response to json: %v", err))
+		log.Panic(fmt.Errorf("could not encode http response to json: %v", err))
 	}
 }
 
