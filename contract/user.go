@@ -12,5 +12,6 @@ type (
 	// that can be performed around user entity
 	UserStorage interface {
 		Create(ctx context.Context, ur request.UserCreateRequest) (*entity.User, error)
+		FindByEmail(ctx context.Context, email string) (*entity.User, error)
 	}
 )

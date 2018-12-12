@@ -7,7 +7,7 @@ type (
 	ErrorBox map[string]error
 )
 
-// MarshalJSON implements Marshaler interface to parse error and return string
+// MarshalJSON implements Marshaller interface to parse error and return string
 func (eb ErrorBox) MarshalJSON() ([]byte, error) {
 	box := make(map[string]string)
 

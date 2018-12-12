@@ -29,7 +29,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uc := user.NewUserController()
+	uc := user.NewController()
 	u, err := uc.Create(r.Context(), ur)
 	if err != nil {
 		response.SendError(w, err, http.StatusInternalServerError)

@@ -8,14 +8,14 @@ import (
 
 type (
 	// UserService provides basic crud operation around User struct
-	CRUDService struct {
+	UserService struct {
 		db *sql.DB
 	}
 )
 
-// NewCRUDService returns a new instance of UserService struct
-func NewCRUDService() *CRUDService {
-	us := CRUDService{
+// NewUserService returns a new instance of UserService struct
+func NewUserService() *UserService {
+	us := UserService{
 		db: mysql.GetConnection(),
 	}
 

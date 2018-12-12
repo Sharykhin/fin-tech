@@ -10,7 +10,7 @@ import (
 )
 
 // Create creates a new user in a database and return just created row as entity
-func (s CRUDService) Create(ctx context.Context, ur request.UserCreateRequest) (*entity.User, error) {
+func (s UserService) Create(ctx context.Context, ur request.UserCreateRequest) (*entity.User, error) {
 	stm, err := s.db.PrepareContext(
 		ctx,
 		"INSERT INTO users (email, first_name, last_name, created_at) VALUES (?, ?, ?, ?)",
