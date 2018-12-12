@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -31,9 +32,14 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := database.UserStorage.FindByEmail(r.Context(), ur.Email); err != nil {
-		response.SendError(w, map[string]string{"email": errs.EmailAlreadyExists.Error()}, http.StatusBadRequest)
-		return
+	if u, err := database.UserStorage.FindByEmail(r.Context(), ur.Email); err != nil || u != nil {
+		if u != nil {
+			response.SendError(w, map[string]string{"email": errs.EmailAlreadyExists.Error()}, http.StatusBadRequest)
+			return
+		} else if err != nil && err != errs.UserWasNotFound {
+			response.SendError(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
 	uc := user.NewController()
@@ -44,10 +50,11 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	s, err := u.Serialize("index")
+	fmt.Println("serialized user", s)
 	if err != nil {
 		// TODO: if we could create user but not serialize we should not terminate app
 		log.Fatal(err)
 	}
 
-	response.SendSuccess(w, s, nil, nil, http.StatusCreated)
+	response.SendSuccess(w, u, nil, nil, http.StatusCreated)
 }

@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/Sharykhin/fin-tech/entity"
 	"github.com/Sharykhin/fin-tech/http/errs"
@@ -15,7 +16,8 @@ func (us UserService) FindByEmail(ctx context.Context, email string) (*entity.Us
 		"SELECT id, email, first_name, last_name, created_at, deleted_at FROM users WHERE email=?",
 		email,
 	)
-	err := row.Scan(user.ID, user.Email, user.FirstName, user.LastName, user.CreatedAt, user.DeletedAt)
+	fmt.Println(row)
+	err := row.Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName, &user.CreatedAt, &user.DeletedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, errs.UserWasNotFound
