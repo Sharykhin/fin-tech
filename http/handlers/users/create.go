@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Sharykhin/fin-tech/database"
+
 	"github.com/Sharykhin/fin-tech/controller/user"
 	"github.com/Sharykhin/fin-tech/http/errs"
 	"github.com/Sharykhin/fin-tech/request"
@@ -26,6 +28,11 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	if err := ur.Validate(); err != nil {
 		response.SendError(w, err, http.StatusBadRequest)
+		return
+	}
+
+	if _, err := database.UserStorage.FindByEmail(r.Context(), ur.Email); err != nil {
+		response.SendError(w, map[string]string{"email": errs.EmailAlreadyExists.Error()}, http.StatusBadRequest)
 		return
 	}
 

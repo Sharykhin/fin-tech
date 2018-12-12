@@ -1,13 +1,10 @@
 package request
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"regexp"
 	"strings"
-
-	"github.com/Sharykhin/fin-tech/database"
 
 	"github.com/Sharykhin/fin-tech/http/errs"
 )
@@ -33,9 +30,6 @@ func (u *UserCreateRequest) Validate() *ErrorBox {
 	if err := validateEmail(u.Email); err != nil {
 		errBox["email"] = err
 		u.isValid = false
-	} else if err := validateUniqueEmail(u.Email); err != nil {
-		errBox["email"] = err
-		u.isValid = false
 	}
 
 	if err := validateFirstName(u.FirstName); err != nil {
@@ -52,15 +46,6 @@ func (u *UserCreateRequest) Validate() *ErrorBox {
 		return &errBox
 	}
 
-	return nil
-}
-
-func validateUniqueEmail(email string) error {
-	if _, err := database.UserStorage.FindByEmail(context.Background(), email); err != nil {
-		if err == errs.UserWasNotFound {
-			return errs.EmailAlreadyExists
-		}
-	}
 	return nil
 }
 
