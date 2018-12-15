@@ -2,8 +2,9 @@ package users
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
+
+	"github.com/Sharykhin/fin-tech/service/logger"
 
 	"github.com/Sharykhin/fin-tech/database"
 
@@ -14,7 +15,6 @@ import (
 )
 
 // TODO: we should use logging when user could not be created
-// TODO: think about serialization group
 
 // Create handler creates a new user
 func Create(w http.ResponseWriter, r *http.Request) {
@@ -22,11 +22,13 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	var ur request.UserCreateRequest
 	err := decoder.Decode(&ur)
 	if err != nil {
-		response.SendError(w, errs.InvalidJSON, http.StatusBadRequest)
+		logger.Error("could not validate input data: %v", err)
+		response.SendError(w, errs.InvalidJSON.Error(), http.StatusBadRequest)
 		return
 	}
 
 	if err := ur.Validate(); err != nil {
+		logger.Error("some data was invalid: %v", err)
 		response.SendError(w, err, http.StatusBadRequest)
 		return
 	}
@@ -44,6 +46,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	uc := user.NewController()
 	u, err := uc.Create(r.Context(), ur)
 	if err != nil {
+		logger.Error("could not create a new user: %v", err)
 		response.SendError(w, err, http.StatusInternalServerError)
 		return
 	}
@@ -51,8 +54,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	s, err := u.Serialize("public")
 
 	if err != nil {
-		// TODO: if we could create user but not serialize we should not terminate app
-		log.Fatal(err)
+		logger.Emergency("could not serialize just created user, something really weird went wrong: %v", err)
 	}
 
 	//response.Send(w, s, http.StatusCreated)
