@@ -26,10 +26,7 @@ func (s Storage) Create(ctx context.Context, ccr request.CreateCompanyRequest) (
 	if err != nil {
 		return nil, fmt.Errorf("coul not get last instert id: %v", err)
 	}
-	var tags []entity.Tag
-	for tag := range ccr.Tags {
-		tags = append(tags, entity.Tag(tag))
-	}
+
 	c := entity.Company{
 		ID:          id,
 		Symbol:      ccr.Symbol,
@@ -37,7 +34,7 @@ func (s Storage) Create(ctx context.Context, ccr request.CreateCompanyRequest) (
 		Exchange:    ccr.Exchange,
 		Website:     ccr.Website,
 		Description: ccr.Description,
-		Tags:        tags,
+		Tags:        ccr.Tags,
 	}
 
 	return &c, nil

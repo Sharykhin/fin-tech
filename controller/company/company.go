@@ -6,13 +6,13 @@ import (
 )
 
 type (
-	Company struct {
+	CompanyController struct {
 		storage contract.CompanyStorage
 	}
 )
 
-func NewCompany() *Company {
-	return &Company{
+func NewCompanyController() *CompanyController {
+	return &CompanyController{
 		storage: database.NewCompanyStorage(),
 	}
 }

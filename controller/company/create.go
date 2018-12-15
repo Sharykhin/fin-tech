@@ -7,6 +7,6 @@ import (
 	"github.com/Sharykhin/fin-tech/request"
 )
 
-func (c Company) Create(ctx context.Context, ccr request.CreateCompanyRequest) (*entity.Company, error) {
+func (c CompanyController) Create(ctx context.Context, ccr request.CreateCompanyRequest) (*entity.Company, error) {
 	return c.storage.Create(ctx, ccr)
 }
