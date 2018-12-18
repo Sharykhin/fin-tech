@@ -8,6 +8,7 @@ import (
 	"github.com/Sharykhin/fin-tech/request"
 )
 
+// Create creates a new company row in a database
 func (s Storage) Create(ctx context.Context, ccr request.CreateCompanyRequest) (*entity.Company, error) {
 	stm, err := s.db.PrepareContext(
 		ctx,
@@ -17,12 +18,12 @@ func (s Storage) Create(ctx context.Context, ccr request.CreateCompanyRequest) (
 		return nil, fmt.Errorf("could not create a prepared statement: %v", err)
 	}
 
-	resutl, err := stm.Exec(ccr.Symbol, ccr.Name, ccr.Exchange, ccr.Website, ccr.Description, ccr.Tags)
+	result, err := stm.Exec(ccr.Symbol, ccr.Name, ccr.Exchange, ccr.Website, ccr.Description, ccr.Tags)
 	if err != nil {
 		return nil, fmt.Errorf("could not execute a prepared statement: %v", err)
 	}
 
-	id, err := resutl.LastInsertId()
+	id, err := result.LastInsertId()
 	if err != nil {
 		return nil, fmt.Errorf("coul not get last instert id: %v", err)
 	}

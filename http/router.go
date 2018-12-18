@@ -21,6 +21,7 @@ func router() http.Handler {
 	s.HandleFunc("/_healthcheck", handlers.HealthCheck).Methods("GET")
 
 	s.HandleFunc("/companies", company.Index).Methods("GET")
+	s.HandleFunc("/companies", company.Create).Methods("POST")
 
 	return s
 }

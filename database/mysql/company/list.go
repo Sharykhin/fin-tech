@@ -7,6 +7,7 @@ import (
 	"github.com/Sharykhin/fin-tech/entity"
 )
 
+// List returns a limited number of companies
 func (s Storage) List(ctx context.Context, limit, offset int64) ([]entity.Company, error) {
 	rows, err := s.db.QueryContext(
 		ctx,
