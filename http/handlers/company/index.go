@@ -24,7 +24,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 	list, total, err := ctrl.Index(r.Context(), limit, offset)
 	if err != nil {
-		logger.Error("could not retreive companies list from controller: %v", err)
+		logger.Error("could not retrieve companies list from controller: %v", err)
 		response.SendError(w, "Something went wrong", http.StatusInternalServerError)
 		return
 	}
@@ -33,6 +33,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		"limit":  limit,
 		"offset": offset,
 		"total":  total,
-		"count":  10,
+		"count":  int64(len(list)),
 	}, http.StatusOK)
 }

@@ -10,6 +10,7 @@ import (
 type (
 	CompanyStorage interface {
 		Create(ctx context.Context, ccr request.CreateCompanyRequest) (*entity.Company, error)
-		//Index(ctx context.Context, limit, offset int64) ([]entity.Company, int64, error)
+		List(ctx context.Context, limit, offset int64) ([]entity.Company, error)
+		Count(ctx context.Context) (int64, error)
 	}
 )

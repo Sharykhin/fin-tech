@@ -3,7 +3,6 @@ package entity
 import (
 	"database/sql/driver"
 	"encoding/json"
-	"log"
 )
 
 type (
@@ -24,10 +23,7 @@ type (
 )
 
 func (t *Tags) Scan(value interface{}) (err error) {
-	log.Fatal("scan")
-
-	return nil
-
+	return json.Unmarshal(value.([]byte), t)
 }
 
 // Value implements the driver Valuer interface.
