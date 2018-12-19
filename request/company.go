@@ -20,39 +20,30 @@ type (
 
 func (ccr CreateCompanyRequest) Validate() ErrorBox {
 	errs := ErrorBox{}
-	if err := validateSymbol(ccr.Symbol); err != nil {
+	if err := validateCompanySymbol(ccr.Symbol); err != nil {
 		errs["symbol"] = err
 	}
 
-	if err := validateName(ccr.Name); err != nil {
+	if err := validateCompanyName(ccr.Name); err != nil {
 		errs["name"] = err
 	}
 
-	if err := validateExchange(ccr.Exchange); err != nil {
+	if err := validateCompanyExchange(ccr.Exchange); err != nil {
 		errs["exchange"] = err
 	}
 
-	if !_filledString(ccr.Website) {
-		errs["website"] = errors.New("website is required")
+	if err := validateCompanyWebsite(ccr.Website); err != nil {
+		errs["website"] = err
 	}
 
-	if !_filledString(ccr.Description) {
+	if err := validateCompanyDescription(ccr.Description); err != nil {
 		errs["description"] = errors.New("description is required")
 	}
 
 	return errs
 }
 
-func validateName(name string) error {
-	trimmedName := strings.Trim(name, " ")
-	if trimmedName == "" {
-		return errors.New("name is required")
-	}
-
-	return nil
-}
-
-func validateSymbol(symbol string) error {
+func validateCompanySymbol(symbol string) error {
 	trimmedSymbol := strings.Trim(symbol, " ")
 	if trimmedSymbol == "" {
 		return errors.New("symbol is required")
@@ -64,10 +55,34 @@ func validateSymbol(symbol string) error {
 	return nil
 }
 
-func validateExchange(exchange string) error {
+func validateCompanyName(name string) error {
+	trimmedName := strings.Trim(name, " ")
+	if trimmedName == "" {
+		return errors.New("name is required")
+	}
+
+	return nil
+}
+
+func validateCompanyExchange(exchange string) error {
 	trimmedExchange := strings.Trim(exchange, " ")
 	if trimmedExchange == "" {
 		return errors.New("exchange is required")
+	}
+
+	return nil
+}
+
+func validateCompanyWebsite(website string) error {
+	if !_filledString(website) {
+		return errors.New("website is required")
+	}
+	return nil
+}
+
+func validateCompanyDescription(description string) error {
+	if !_filledString(description) {
+		return errors.New("description is required")
 	}
 
 	return nil
