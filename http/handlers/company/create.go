@@ -21,6 +21,11 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if errs := ccr.Validate(); len(errs) > 0 {
+		response.SendError(w, errs, http.StatusBadRequest)
+		return
+	}
+
 	ctrl := company.NewCompanyController()
 
 	c, err := ctrl.Create(r.Context(), ccr)

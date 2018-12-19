@@ -1,6 +1,9 @@
 package request
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strings"
+)
 
 type (
 	// ErrorBox is a customer error container that would be used for validating
@@ -16,4 +19,13 @@ func (eb ErrorBox) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&box)
+}
+
+func _filledString(value string) bool {
+	trimmedValue := strings.Trim(value, " ")
+	if trimmedValue == "" {
+		return false
+	}
+
+	return true
 }
