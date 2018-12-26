@@ -33,6 +33,13 @@ func (ns *NullString) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (ns NullString) MarshalJSON() ([]byte, error) {
+	if !ns.Valid {
+		return []byte("null"), nil
+	}
+	return json.Marshal(ns.Value)
+}
+
 // MarshalJSON implements Marshaller interface to parse error and return string
 func (eb ErrorBox) MarshalJSON() ([]byte, error) {
 	box := make(map[string]string)
