@@ -18,10 +18,54 @@ type (
 	}
 
 	UpdateCompanyRequest struct {
+		Symbol      NullString  `json:"symbol"`
+		Name        NullString  `json:"name"`
+		Exchange    NullString  `json:"exchange"`
+		Website     NullString  `json:"website"`
 		Description NullString  `json:"description"`
 		Tags        entity.Tags `json:"tags"`
 	}
 )
+
+func (ucr UpdateCompanyRequest) Validate() (bool, ErrorBox) {
+	box := ErrorBox{}
+
+	if ucr.Symbol.Valid {
+		if err := validateCompanySymbol(ucr.Symbol.Value); err != nil {
+			box["symbol"] = err
+		}
+	}
+
+	if ucr.Name.Valid {
+		if err := validateCompanyName(ucr.Name.Value); err != nil {
+			box["name"] = err
+		}
+	}
+
+	if ucr.Exchange.Valid {
+		if err := validateCompanyExchange(ucr.Exchange.Value); err != nil {
+			box["exchange"] = err
+		}
+	}
+
+	if ucr.Website.Valid {
+		if err := validateCompanyWebsite(ucr.Website.Value); err != nil {
+			box["website"] = err
+		}
+	}
+
+	if ucr.Description.Valid {
+		if err := validateCompanyDescription(ucr.Description.Value); err != nil {
+			box["description"] = err
+		}
+	}
+
+	if len(box) > 0 {
+		return false, box
+	}
+
+	return true, box
+}
 
 func (ccr CreateCompanyRequest) Validate() ErrorBox {
 	errs := ErrorBox{}
@@ -42,7 +86,7 @@ func (ccr CreateCompanyRequest) Validate() ErrorBox {
 	}
 
 	if err := validateCompanyDescription(ccr.Description); err != nil {
-		errs["description"] = errors.New("description is required")
+		errs["description"] = err
 	}
 
 	return errs
