@@ -67,7 +67,7 @@ func (ucr UpdateCompanyRequest) Validate() (bool, ErrorBox) {
 	return true, box
 }
 
-func (ccr CreateCompanyRequest) Validate() ErrorBox {
+func (ccr CreateCompanyRequest) Validate() (bool, ErrorBox) {
 	errs := ErrorBox{}
 	if err := validateCompanySymbol(ccr.Symbol); err != nil {
 		errs["symbol"] = err
@@ -89,7 +89,10 @@ func (ccr CreateCompanyRequest) Validate() ErrorBox {
 		errs["description"] = err
 	}
 
-	return errs
+	if len(errs) > 0 {
+		return false, errs
+	}
+	return true, errs
 }
 
 func validateCompanySymbol(symbol string) error {

@@ -30,8 +30,9 @@ func router() http.Handler {
 // ListenAndServe starts listening http service on a provided addr
 func ListenAndServe(addr string) error {
 	s := &http.Server{
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  time.Second * 60,
 		Handler:      router(),
 		Addr:         addr,
 	}

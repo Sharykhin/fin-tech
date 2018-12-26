@@ -21,8 +21,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if errs := ccr.Validate(); len(errs) > 0 {
-		response.SendError(w, errs, http.StatusBadRequest)
+	if valid, errsBox := ccr.Validate(); !valid {
+		response.SendError(w, errsBox, http.StatusBadRequest)
 		return
 	}
 
