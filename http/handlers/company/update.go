@@ -20,7 +20,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("oops")
-	fmt.Println(ccr)
+	fmt.Println(ccr.Description.Valid, ccr.Description.Value)
 
 	w.Write([]byte("OK"))
 }
