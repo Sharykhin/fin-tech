@@ -13,4 +13,6 @@ var (
 	LastNameIsTooLong   = errors.New("last_name can not be longer than %d characters")
 	UserWasNotFound     = errors.New("user was not found")
 	EmailAlreadyExists  = errors.New("email is already in use")
+
+	ResourceNotFound = errors.New("resource could not be found")
 )

@@ -2,7 +2,6 @@ package company
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -10,7 +9,6 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/Sharykhin/fin-tech/controller/company"
-
 	"github.com/Sharykhin/fin-tech/http/errs"
 	"github.com/Sharykhin/fin-tech/request"
 	"github.com/Sharykhin/fin-tech/service/logger"
@@ -46,10 +44,10 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	ctrl := company.NewCompanyController()
 	err = ctrl.Update(r.Context(), ID, ucr)
 	if err != nil {
-		fmt.Println("e", err)
+		logger.Logger.Error("controller could not update a company: %v", err)
+		response.SendError(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
 	}
-	fmt.Println("oops")
-	fmt.Println(ucr.Tags)
 
-	w.Write([]byte("OK"))
+	response.SendSuccess(w, nil, nil, nil, http.StatusNoContent)
 }

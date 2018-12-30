@@ -23,6 +23,7 @@ func router() http.Handler {
 	s.HandleFunc("/companies", company.Index).Methods("GET")
 	s.HandleFunc("/companies", company.Create).Methods("POST")
 	s.HandleFunc("/companies/{id:[0-9]+}", company.Update).Methods("PUT")
+	s.HandleFunc("/companies/{id:[0-9]+}", company.Get).Methods("GET")
 
 	return s
 }

@@ -10,15 +10,15 @@ type Logger struct {
 }
 
 func (l Logger) Error(format string, v ...interface{}) {
-	l.Printf("ERROR: "+format, v)
+	l.Printf("ERROR: "+format, v...)
 }
 
 func (l Logger) Info(format string, v ...interface{}) {
-	l.Printf("INFO: "+format, v)
+	l.Printf("INFO: "+format, v...)
 }
 
 func (l Logger) Emergency(format string, v ...interface{}) {
-	l.Panicf("EMERGENCY: "+format, v)
+	l.Panicf("EMERGENCY: "+format, v...)
 }
 
 // NewStdLogger returns a new instance of logger that put logs into std output

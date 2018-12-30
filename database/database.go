@@ -15,6 +15,6 @@ func NewUserStorage() contract.UserStorage {
 }
 
 // NewCompanyStorage returns a new instance of company storage
-func NewCompanyStorage() contract.CompanyStorage {
+func NewCompanyStorage() *company.Storage {
 	return company.NewStorage()
 }
