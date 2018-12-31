@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/Sharykhin/fin-tech/http/errs"
+
 	"github.com/Sharykhin/fin-tech/request"
 )
 
@@ -38,8 +40,13 @@ func (s Storage) Update(ctx context.Context, ID int64, ucr request.UpdateCompany
 		replacements = append(replacements, ucr.Description.Value)
 	}
 
+	if ucr.Tags.Valid {
+		sets += "tags=?,"
+		replacements = append(replacements, ucr.Tags.Value)
+	}
+
 	if len(replacements) == 0 {
-		return fmt.Errorf("there is nothing to update")
+		return errs.NothingToUpdate
 	}
 
 	replacements = append(replacements, ID)

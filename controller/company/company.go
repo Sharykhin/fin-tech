@@ -7,12 +7,14 @@ import (
 )
 
 type (
+	// CompanyController is a general controller around Company entity
 	CompanyController struct {
 		storage contract.CompanyStorage
 		logger  contract.Logger
 	}
 )
 
+// NewCompanyController returns a new instance of CompanyController
 func NewCompanyController() *CompanyController {
 	return &CompanyController{
 		storage: database.NewCompanyStorage(),

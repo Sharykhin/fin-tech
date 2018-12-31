@@ -24,6 +24,9 @@ func setHeaders(w http.ResponseWriter) {
 func SendSuccess(w http.ResponseWriter, data interface{}, warnings interface{}, meta interface{}, statusCode int) {
 	setHeaders(w)
 	w.WriteHeader(statusCode)
+	if statusCode == http.StatusNoContent {
+		return
+	}
 	var err error
 	if raw, ok := data.([]byte); ok {
 		err = json.NewEncoder(w).Encode(&struct {

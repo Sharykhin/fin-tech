@@ -1,6 +1,7 @@
 package request
 
 import (
+	"encoding/json"
 	"errors"
 	"strings"
 
@@ -18,14 +19,36 @@ type (
 	}
 
 	UpdateCompanyRequest struct {
-		Symbol      NullString  `json:"symbol"`
-		Name        NullString  `json:"name"`
-		Exchange    NullString  `json:"exchange"`
-		Website     NullString  `json:"website"`
-		Description NullString  `json:"description"`
-		Tags        entity.Tags `json:"tags"`
+		Symbol      NullString `json:"symbol"`
+		Name        NullString `json:"name"`
+		Exchange    NullString `json:"exchange"`
+		Website     NullString `json:"website"`
+		Description NullString `json:"description"`
+		Tags        NullTags   `json:"tags"`
+	}
+
+	NullTags struct {
+		Valid bool
+		Value entity.Tags
 	}
 )
+
+func (nt *NullTags) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		nt.Valid = false
+		return nil
+	}
+
+	nt.Valid = true
+	var tags entity.Tags
+	if err := json.Unmarshal(data, &tags); err != nil {
+		return err
+	}
+
+	nt.Valid = true
+	nt.Value = tags
+	return nil
+}
 
 func (ucr UpdateCompanyRequest) Validate() (bool, ErrorBox) {
 	box := ErrorBox{}

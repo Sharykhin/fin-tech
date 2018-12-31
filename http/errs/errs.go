@@ -15,4 +15,5 @@ var (
 	EmailAlreadyExists  = errors.New("email is already in use")
 
 	ResourceNotFound = errors.New("resource could not be found")
+	NothingToUpdate  = errors.New("there is nothing to update")
 )
