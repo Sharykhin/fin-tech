@@ -9,12 +9,13 @@ import (
 	"github.com/Sharykhin/fin-tech/http/errs"
 )
 
+// Get returns a row of broker
 func (s Storage) Get(ctx context.Context, UserID int64) (*entity.Broker, error) {
 	row := s.db.QueryRowContext(
 		ctx,
 		"SELECT u.id, u.email, b.position, b.created_at, b.deleted_at "+
 			"FROM brokers AS b "+
-			"INNER JOIN users AS u ON b.user_id = u.id"+
+			"INNER JOIN users AS u ON b.user_id = u.id "+
 			"WHERE b.user_id = ?",
 		UserID,
 	)

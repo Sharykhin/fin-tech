@@ -1,14 +1,12 @@
 package broker
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
-	"github.com/Sharykhin/fin-tech/entity"
+	"github.com/Sharykhin/fin-tech/http/errs"
 
+	"github.com/Sharykhin/fin-tech/controller/broker"
 	"github.com/Sharykhin/fin-tech/service/logger"
 	"github.com/Sharykhin/fin-tech/service/response"
 	"github.com/gorilla/mux"
@@ -24,24 +22,17 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(ID)
-
-	b := entity.Broker{
-		User: entity.UserIdentity{
-			ID:    1,
-			Email: "chapal@inbox.ru",
-		},
-		Position: entity.NullInt{
-			Valid: false,
-		},
-		CreatedAt: entity.Time(time.Now()),
-		DeletedAt: entity.NullTime{
-			Valid: false,
-		},
-	}
-
-	err = json.NewEncoder(w).Encode(&b)
+	ctrl := broker.NewBrokerController()
+	b, err := ctrl.Get(r.Context(), ID)
 	if err != nil {
-		fmt.Println(err)
+		if err == errs.ResourceNotFound {
+			response.SendError(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		logger.Logger.Error("failed to get broker: %v", err)
+		response.SendError(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
 	}
+
+	response.SendSuccess(w, b, nil, nil, http.StatusOK)
 }

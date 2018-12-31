@@ -3,11 +3,10 @@ package logger
 import (
 	"log"
 
-	"github.com/Sharykhin/fin-tech/contract"
 	"github.com/Sharykhin/fin-tech/service/logger/std"
 )
 
-var Logger contract.Logger = std.NewStdLogger()
+var Logger = std.NewStdLogger()
 
 const (
 	ERROR     = "ERROR"

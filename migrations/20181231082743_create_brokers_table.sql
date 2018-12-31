@@ -3,7 +3,7 @@
 CREATE TABLE `brokers` (
   `user_id` INT UNSIGNED NOT NULL,
   `position` TINYINT NULL,
-  `created_at` TIMESTAMP NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` TIMESTAMP NULL,
   PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_user_id_users_id`

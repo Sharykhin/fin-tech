@@ -56,6 +56,19 @@ func (ni NullInt) MarshalJSON() ([]byte, error) {
 	return json.Marshal(nil)
 }
 
+func (ni *NullInt) Scan(value interface{}) error {
+	if value == nil {
+		ni.Valid, ni.Value = false, 0
+		return nil
+	}
+
+	if v, ok := value.(int64); ok {
+		ni.Valid, ni.Value = true, int(v)
+	}
+
+	return nil
+}
+
 func (nt *NullTime) Scan(value interface{}) (err error) {
 	if value == nil {
 		nt.Time, nt.Valid = Time(time.Time{}), false
