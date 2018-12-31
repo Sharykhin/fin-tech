@@ -17,6 +17,11 @@ type (
 		Valid bool // Valid is true if Time is not NULL
 	}
 
+	NullInt struct {
+		Valid bool
+		Value int
+	}
+
 	// Time is a general time that is used across that project.
 	// The main idea under custom time type is to use ISO 8601 as a returned value
 	Time time.Time
@@ -24,6 +29,31 @@ type (
 
 func (t Time) MarshalJSON() ([]byte, error) {
 	return json.Marshal(time.Time(t).Format(ISO8601))
+}
+
+func (ni *NullInt) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		ni.Valid = false
+		return nil
+	}
+
+	var tmpInt int
+	if err := json.Unmarshal(data, &tmpInt); err != nil {
+		return err
+	}
+
+	ni.Valid = true
+	ni.Value = tmpInt
+
+	return nil
+}
+
+func (ni NullInt) MarshalJSON() ([]byte, error) {
+	if ni.Valid {
+		return json.Marshal(ni.Value)
+	}
+
+	return json.Marshal(nil)
 }
 
 func (nt *NullTime) Scan(value interface{}) (err error) {

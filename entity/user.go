@@ -12,6 +12,11 @@ type (
 		CreatedAt Time     `json:"created_at"`
 		DeletedAt NullTime `json:"deleted_at"`
 	}
+
+	UserIdentity struct {
+		ID    int64  `json:"id"`
+		Email string `json:"email"`
+	}
 )
 
 // TODO: just imagine that we have 50 properties and they can be changed from time to time

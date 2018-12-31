@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Sharykhin/fin-tech/http/handlers/broker"
+
 	"github.com/Sharykhin/fin-tech/http/handlers/company"
 
 	"github.com/Sharykhin/fin-tech/http/handlers/users"
@@ -24,6 +26,8 @@ func router() http.Handler {
 	s.HandleFunc("/companies", company.Create).Methods("POST")
 	s.HandleFunc("/companies/{id:[0-9]+}", company.Update).Methods("PUT")
 	s.HandleFunc("/companies/{id:[0-9]+}", company.Get).Methods("GET")
+
+	s.HandleFunc("/brokers/{id:[0-9]+}", broker.Get).Methods("GET")
 
 	return s
 }
