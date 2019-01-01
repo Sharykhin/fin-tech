@@ -13,7 +13,7 @@ import (
 func (s Storage) Get(ctx context.Context, UserID int64) (*entity.Broker, error) {
 	row := s.db.QueryRowContext(
 		ctx,
-		"SELECT u.id, u.email, b.position, b.created_at, b.deleted_at "+
+		"SELECT u.id, u.email, b.position, b.role, b.created_at, b.deleted_at "+
 			"FROM brokers AS b "+
 			"INNER JOIN users AS u ON b.user_id = u.id "+
 			"WHERE b.user_id = ?",
@@ -22,7 +22,7 @@ func (s Storage) Get(ctx context.Context, UserID int64) (*entity.Broker, error) 
 
 	var ui entity.UserIdentity
 	var b entity.Broker
-	err := row.Scan(&ui.ID, &ui.Email, &b.Position, &b.CreatedAt, &b.DeletedAt)
+	err := row.Scan(&ui.ID, &ui.Email, &b.Position, &b.Role, &b.CreatedAt, &b.DeletedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, errs.ResourceNotFound
