@@ -3,6 +3,7 @@ package entity
 import (
 	"database/sql/driver"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -19,12 +20,12 @@ type (
 
 	NullInt struct {
 		Valid bool
-		Value int
+		Int   int
 	}
 
 	NullString struct {
-		Valid bool
-		Value string
+		Valid  bool
+		String string
 	}
 
 	// Time is a general time that is used across that project.
@@ -45,7 +46,7 @@ func (ns *NullString) UnmarshalJSON(data []byte) error {
 	}
 
 	ns.Valid = true
-	ns.Value = tmp
+	ns.String = tmp
 
 	return nil
 }
@@ -54,17 +55,17 @@ func (ns NullString) MarshalJSON() ([]byte, error) {
 	if !ns.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(ns.Value)
+	return json.Marshal(ns.String)
 }
 
 func (ns *NullString) Scan(value interface{}) error {
 	if value == nil {
-		ns.Valid, ns.Value = false, ""
+		ns.Valid, ns.String = false, ""
 		return nil
 	}
 
 	if v, ok := value.([]uint8); ok {
-		ns.Valid, ns.Value = true, string(v)
+		ns.Valid, ns.String = true, string(v)
 	}
 
 	return nil
@@ -73,6 +74,8 @@ func (ns *NullString) Scan(value interface{}) error {
 func (t Time) MarshalJSON() ([]byte, error) {
 	return json.Marshal(time.Time(t).Format(ISO8601))
 }
+
+/** NullInt **/
 
 func (ni *NullInt) UnmarshalJSON(data []byte) error {
 	if string(data) == "null" {
@@ -86,7 +89,7 @@ func (ni *NullInt) UnmarshalJSON(data []byte) error {
 	}
 
 	ni.Valid = true
-	ni.Value = tmpInt
+	ni.Int = tmpInt
 
 	return nil
 }
@@ -101,16 +104,26 @@ func (ni NullInt) MarshalJSON() ([]byte, error) {
 
 func (ni *NullInt) Scan(value interface{}) error {
 	if value == nil {
-		ni.Valid, ni.Value = false, 0
+		ni.Valid, ni.Int = false, 0
 		return nil
 	}
 
 	if v, ok := value.(int64); ok {
-		ni.Valid, ni.Value = true, int(v)
+		ni.Valid, ni.Int = true, int(v)
 	}
 
 	return nil
 }
+
+func (ni NullInt) Value() (driver.Value, error) {
+	fmt.Println("HA HA", ni)
+	if !ni.Valid {
+		return nil, nil
+	}
+	return ni.Int, nil
+}
+
+/** NullTime **/
 
 func (nt *NullTime) Scan(value interface{}) (err error) {
 	if value == nil {
