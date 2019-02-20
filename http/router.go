@@ -27,7 +27,8 @@ func router() http.Handler {
 	s.HandleFunc("/companies/{id:[0-9]+}", company.Update).Methods("PUT")
 	s.HandleFunc("/companies/{id:[0-9]+}", company.Get).Methods("GET")
 
-	s.HandleFunc("/brokers/{id:[0-9]+}", broker.Get).Methods("GET")
+	brokerHandler := broker.NewHTTPHandler()
+	s.HandleFunc("/brokers/{id:[0-9]+}", brokerHandler.Get).Methods("GET")
 	s.HandleFunc("/brokers/{id:[0-9]+}", broker.Update).Methods("PUT")
 
 	return s

@@ -15,6 +15,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Update updates a broker
 func Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 

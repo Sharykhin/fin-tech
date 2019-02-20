@@ -6,13 +6,12 @@ import (
 
 	"github.com/Sharykhin/fin-tech/http/errs"
 
-	"github.com/Sharykhin/fin-tech/controller/broker"
 	"github.com/Sharykhin/fin-tech/service/logger"
 	"github.com/Sharykhin/fin-tech/service/response"
 	"github.com/gorilla/mux"
 )
 
-func Get(w http.ResponseWriter, r *http.Request) {
+func (h HTTPHandler) Get(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	ID, err := strconv.ParseInt(vars["id"], 10, 64)
@@ -22,8 +21,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctrl := broker.NewBrokerController()
-	b, err := ctrl.Get(r.Context(), ID)
+	b, err := h.controller.Get(r.Context(), ID)
 	if err != nil {
 		if err == errs.ResourceNotFound {
 			response.SendError(w, err.Error(), http.StatusNotFound)
