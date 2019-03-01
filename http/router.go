@@ -1,6 +1,7 @@
 package http
 
 import (
+	"github.com/Sharykhin/fin-tech/http/middleware"
 	"net/http"
 	"time"
 
@@ -28,7 +29,8 @@ func router() http.Handler {
 	s.HandleFunc("/companies/{id:[0-9]+}", company.Get).Methods("GET")
 
 	brokerHandler := broker.NewHTTPHandler()
-	s.HandleFunc("/brokers/{id:[0-9]+}", brokerHandler.Get).Methods("GET")
+	//s.Handle("/brokers/{id:[0-9]+}", middleware.EncodeJSON(middleware.Chain(http.HandlerFunc(brokerHandler.Get)))).Methods("GET")
+	s.Handle("/brokers/{id:[0-9]+}", middleware.EncodeJSON(brokerHandler.Get)).Methods("GET")
 	s.HandleFunc("/brokers/{id:[0-9]+}", broker.Update).Methods("PUT")
 
 	return s
