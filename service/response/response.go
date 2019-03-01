@@ -16,6 +16,7 @@ type (
 	}
 )
 
+//TODO: this about using middleware to send a proper headers
 func setHeaders(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 }
@@ -67,6 +68,7 @@ func SendError(w http.ResponseWriter, errors interface{}, statusCode int) {
 	})
 
 	if err != nil {
+		// TODO: use log.Panic or just panic but use one style
 		panic(fmt.Errorf("could not marshal json response: %v", err))
 	}
 
