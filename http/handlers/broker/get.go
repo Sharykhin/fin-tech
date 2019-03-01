@@ -13,7 +13,7 @@ import (
 
 func (h HTTPHandler) Get(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-
+	// TODO: use wrapper to handle response and return resonse as type
 	ID, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
 		logger.LOG(logger.ERROR, "could not parse route param id: %v", err)
