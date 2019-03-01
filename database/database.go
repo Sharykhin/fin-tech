@@ -8,7 +8,6 @@ import (
 )
 
 var UserStorage contract.UserStorage = user.NewUserService()
-var CompanyStorage contract.CompanyStorage = company.NewStorage()
 
 // NewUserStorage return
 func NewUserStorage() contract.UserStorage {

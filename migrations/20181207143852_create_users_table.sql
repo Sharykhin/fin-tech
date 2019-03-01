@@ -5,8 +5,8 @@ CREATE TABLE `users` (
   `email` VARCHAR(80) NOT NULL,
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
-  `created_at` TIMESTAMP NOT NULL,
-  `deleted_at` TIMESTAMP NULL,
+  `created_at` DATETIME NOT NULL,
+  `deleted_at` DATETIME NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC));
 
