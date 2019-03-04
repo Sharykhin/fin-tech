@@ -3,11 +3,11 @@ package broker
 import "github.com/Sharykhin/fin-tech/controller/broker"
 
 type HTTPHandler struct {
-	controller *broker.BrokerController
+	controller *broker.Controller
 }
 
 func NewHTTPHandler() *HTTPHandler {
 	return &HTTPHandler{
-		controller: broker.NewBrokerController(),
+		controller: broker.NewController(),
 	}
 }

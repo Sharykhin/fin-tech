@@ -7,20 +7,19 @@ import (
 )
 
 type (
-	// BrokerController is a controller that would
+	// Controller is a controller that would
 	// handle business logic around broker entity
-	BrokerController struct {
+	Controller struct {
 		controller.Controller
 		storage contract.BrokerStorage
 	}
 )
 
-// NewBrokerController is a function constructor
+// NewController is a function constructor
 // that returns a new instance of BrokerController struct
-func NewBrokerController() *BrokerController {
-	ctrl := controller.NewController()
-	return &BrokerController{
-		Controller: ctrl,
+func NewController() *Controller {
+	return &Controller{
+		Controller: controller.NewController(),
 		storage: database.NewBrokerStorage(),
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/Sharykhin/fin-tech/service/logger/std"
 )
 
+// TODO: it's better to use some kind of constructor, but just think about it.
 var Logger = std.NewStdLogger()
 
 const (

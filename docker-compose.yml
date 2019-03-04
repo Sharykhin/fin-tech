@@ -6,11 +6,12 @@ networks:
 
 volumes:
   ft-mysql-data:
+  ft-mongo-data:
 
 services:
-  ft-web-api-golang:
-    container_name: ft-web-api-golang
-    image: ft-web-api-golang
+  ft-api:
+    container_name: ft-api
+    image: ft-api
     build:
       context: .
       dockerfile: .docker/golang/api/Dockerfile
@@ -22,10 +23,13 @@ services:
       - 8003:8003
     depends_on:
       - ft-mysql
+      - ft-mongo
     links:
       - ft-mysql
+      - ft-mongo
     networks:
       - fintech-backend
+
   ft-mysql:
     container_name: ft-mysql
     image: ft-mysql
@@ -39,5 +43,17 @@ services:
       - 3309:3306
     env_file:
       - ./.docker/mysql/.env
+    networks:
+      - fintech-backend
+
+  ft-mongo:
+    container_name: ft-mongo
+    image: mongo:4.0.6
+    ports:
+      - 27017:27017
+    env_file:
+      - ./.docker/mongo/.env
+    volumes:
+      - ft-mongo-data:/data/db
     networks:
       - fintech-backend
